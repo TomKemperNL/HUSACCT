@@ -37,8 +37,8 @@ class FamixCreationPostProcessor {
     private int numberOfWaitingObjects; 
     private int numberOfDerivedAssociations;
 
-    public FamixCreationPostProcessor() {
-        theModel = FamixModel.getInstance();
+    public FamixCreationPostProcessor(FamixModel model) {
+        theModel = model;
         numberOfNotConnectedWaitingAssociations = 0;
 		numberOfDerivedAssociations = 0;
         amountOfModulesConnected = 0;

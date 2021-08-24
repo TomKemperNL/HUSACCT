@@ -14,17 +14,12 @@ import java.util.List;
 import org.antlr.runtime.tree.CommonTree;
 
 public class BufferService {
-	protected IModelCreationService modelService = new FamixCreationServiceImpl();
-	private static BufferService instance;
+	protected IModelCreationService modelService;
 	public LinkedList<LambdaBuffer> lambdabuffers = new LinkedList<>();
 	public List<DelegateBuffer> delegatebuffers = new ArrayList<>();
 
-	private BufferService() {}
-
-	public static BufferService getInstance() {
-		if (instance == null)
-			instance = new BufferService();
-		return instance;
+	private BufferService(IModelCreationService modelService) {
+		this.modelService = modelService;
 	}
 
 	public void addLambda(String packageAndClassname, String methodname, CommonTree lambdaTree) {
@@ -33,7 +28,7 @@ public class BufferService {
 	}
 
 	public void addDelegate(String packageAndClassname, CommonTree delegateTree) {
-		delegatebuffers.add(new DelegateBuffer(packageAndClassname).store(delegateTree));
+		delegatebuffers.add(new DelegateBuffer(this.modelService, packageAndClassname).store(delegateTree));
 		checkLambdaExistsAndCombine();
 	}
 

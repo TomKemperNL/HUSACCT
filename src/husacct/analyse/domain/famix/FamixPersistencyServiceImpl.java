@@ -36,8 +36,8 @@ public class FamixPersistencyServiceImpl implements IModelPersistencyService {
     // The following Famix types have to be exported and imported in strict order: Packages, Classes, Libraries, Dependencies, UmlLinks;
     // The first three need to be sorted on uniqueName.
     
-   public FamixPersistencyServiceImpl(IModelQueryService queryService) {
-       theModel = FamixModel.getInstance();
+   public FamixPersistencyServiceImpl(FamixModel model, IModelQueryService queryService) {
+       theModel = model;
 	   this.queryService = queryService;
    }
     

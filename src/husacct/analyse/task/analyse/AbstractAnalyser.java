@@ -14,8 +14,8 @@ public abstract class AbstractAnalyser {
     private IModelCreationService modelCreationService;
     private String projectPath = "";
 
-    public AbstractAnalyser() {
-        this.modelCreationService = new FamixCreationServiceImpl();
+    public AbstractAnalyser(IModelCreationService modelService) {
+        this.modelCreationService = modelService;
     }
 
     public void analyseSourceFile(String projectPath, String sourceFilePathInput) {

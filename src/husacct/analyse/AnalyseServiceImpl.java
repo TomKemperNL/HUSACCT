@@ -5,6 +5,7 @@ import java.util.List;
 
 import husacct.analyse.domain.IModelPersistencyService;
 import husacct.analyse.domain.IModelQueryService;
+import husacct.analyse.domain.famix.FamixModel;
 import husacct.analyse.domain.famix.FamixPersistencyServiceImpl;
 import husacct.analyse.domain.famix.FamixQueryServiceImpl;
 import husacct.analyse.presentation.AnalyseInternalFrame;
@@ -31,9 +32,9 @@ public class AnalyseServiceImpl extends ObservableService implements IAnalyseSer
     private AnalyseInternalFrame analyseInternalFrame;
     private AnalyseInternalSARFrame analyseInternalSARFrame;
 
-    public AnalyseServiceImpl() {
-        this.queryService = new FamixQueryServiceImpl(); //Must be created as first, since it clears the model (needed in case of reloading workspaces). 
-        this.persistencyService = new FamixPersistencyServiceImpl(queryService);
+    public AnalyseServiceImpl(IModelQueryService queryService, IModelPersistencyService persistencyService) {
+        this.queryService = queryService;
+        this.persistencyService = persistencyService;
         this.analyseTaskControl = new AnalyseTaskControl(persistencyService, queryService);
 
     }

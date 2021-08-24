@@ -38,10 +38,10 @@ class VariableAnalyser extends JavaGenerator{
     private boolean isComposite = false; 		// False if the type allows one value only, like Person; True in case of a generic type, or e.g. Person[]. 
     private String typeInClassDiagram = ""; 	// E.g. in case of an instance variable with a generic type ArrayList<Person>, this value is Person.
     private boolean isLocalVariable = false;
-	private IModelCreationService modelService = new FamixCreationServiceImpl();
     private Logger logger = Logger.getLogger(VariableAnalyser.class);
 
-    public VariableAnalyser(String belongsToClass) {
+    public VariableAnalyser(IModelCreationService modelService, String belongsToClass) {
+    	super(modelService);
         this.belongsToClass = belongsToClass;
     }
     
@@ -259,7 +259,7 @@ class VariableAnalyser extends JavaGenerator{
     private void dispatchAnnotationsOfLocalVariable(List<VariableModifierContext> variableModifierList) {
     	for (VariableModifierContext variableModifier : variableModifierList) {
         	if (variableModifier.annotation() != null) {
-				new AnnotationAnalyser(variableModifier.annotation(), this.belongsToClass);
+				new AnnotationAnalyser(this.modelService, variableModifier.annotation(), this.belongsToClass);
         	}
 		}
      }

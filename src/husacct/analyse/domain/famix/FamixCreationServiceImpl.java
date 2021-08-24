@@ -22,9 +22,9 @@ public class FamixCreationServiceImpl implements IModelCreationService {
 	int numberOfInternalClassesAddedBasedOnImports = 0;
     
 
-    public FamixCreationServiceImpl() {
-        model = FamixModel.getInstance();
-        creationPostProcessor = new FamixCreationPostProcessor();
+    public FamixCreationServiceImpl(FamixModel model) {
+        this.model = model;
+        creationPostProcessor = new FamixCreationPostProcessor(model);
     }
 
     @Override

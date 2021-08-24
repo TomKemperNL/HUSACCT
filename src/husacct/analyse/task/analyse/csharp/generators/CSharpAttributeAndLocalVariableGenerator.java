@@ -24,7 +24,11 @@ public class CSharpAttributeAndLocalVariableGenerator extends CSharpGenerator{
     private int levelOfRecursionWithinGenericType;
 	private DependencySubTypes dependencySubType;
 	private CSharpInvocationGenerator csharpInvocationGenerator;
-    private IModelCreationService modelService = new FamixCreationServiceImpl();
+
+	public CSharpAttributeAndLocalVariableGenerator(IModelCreationService modelCreationService){
+		super(modelCreationService);
+	}
+
     
 	public void generateAttributeToDomain(Tree treeNode, String packageAndClassName) {
         initialize();

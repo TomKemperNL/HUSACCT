@@ -11,9 +11,10 @@ class AnnotationAnalyser {
     private String name;
     private String uniqueName;
     private int lineNumber;
-    private IModelCreationService modelService = new FamixCreationServiceImpl();
+    private IModelCreationService modelService;
 
-    public AnnotationAnalyser(AnnotationContext annotation, String belongsToClass) {
+    public AnnotationAnalyser(IModelCreationService modelService, AnnotationContext annotation, String belongsToClass) {
+    	this.modelService = modelService;
         if ((annotation != null) && (belongsToClass != null) && !belongsToClass.equals("")) {
         	if (annotation.annotationName() != null) {
 	        	name = annotation.annotationName().getText();

@@ -6,7 +6,9 @@ import husacct.analyse.task.analyse.AbstractAnalyser;
 
 public class ClojureAnalyser extends AbstractAnalyser {
 
-    IModelCreationService modelCreatorService = new FamixCreationServiceImpl();
+    public ClojureAnalyser(IModelCreationService modelCreationService){
+        super(modelCreationService);
+    }
 
     @Override
     public void generateModelFromSourceFile(String sourceFilePath) {

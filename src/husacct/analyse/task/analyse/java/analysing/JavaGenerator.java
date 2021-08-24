@@ -15,7 +15,11 @@ import husacct.analyse.task.analyse.java.parsing.JavaParser.TypeTypeContext;
 
 abstract class JavaGenerator {
 
-    protected IModelCreationService modelService = new FamixCreationServiceImpl();
+	public JavaGenerator(IModelCreationService modelService){
+		this.modelService = modelService;
+	}
+
+    protected IModelCreationService modelService;
     
     protected String determineVisibility(List<ModifierContext> modifierList) {
     	String visibility = VisibilitySet.DEFAULT.toString();
@@ -70,7 +74,7 @@ abstract class JavaGenerator {
         	//int size = modifierList.size();
         	for (ModifierContext modifier : modifierList) {
             	if ((modifier.classOrInterfaceModifier() != null) && (modifier.classOrInterfaceModifier().annotation() != null)) {
-    				new AnnotationAnalyser(modifier.classOrInterfaceModifier().annotation(), belongsToClass);
+    				new AnnotationAnalyser(this.modelService, modifier.classOrInterfaceModifier().annotation(), belongsToClass);
             	}
 			}
  		}

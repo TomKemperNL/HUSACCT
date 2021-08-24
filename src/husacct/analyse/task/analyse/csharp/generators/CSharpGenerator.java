@@ -5,5 +5,9 @@ import husacct.analyse.domain.famix.FamixCreationServiceImpl;
 
 abstract class CSharpGenerator {
 
-    protected IModelCreationService modelService = new FamixCreationServiceImpl();
+    public CSharpGenerator(IModelCreationService modelCreationService){
+        this.modelService = modelCreationService;
+    }
+
+    protected IModelCreationService modelService;
 }

@@ -3,6 +3,7 @@ package husacct.analyse.task.analyse.java;
 
 import java.io.IOException;
 
+import husacct.analyse.domain.IModelCreationService;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
@@ -24,6 +25,10 @@ public class JavaAnalyser extends AbstractAnalyser {
 	private CompilationUnitContext compilationUnit;
 	private CharStream charStream;
     private Logger logger = Logger.getLogger(JavaAnalyser.class);
+
+    public JavaAnalyser(IModelCreationService modelService){
+    	super(modelService);
+	}
 
     @Override
     public void generateModelFromSourceFile(String sourceFilePath) {

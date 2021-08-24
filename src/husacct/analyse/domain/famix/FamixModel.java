@@ -11,9 +11,8 @@ import javax.naming.directory.InvalidAttributesException;
 
 import org.apache.log4j.Logger;
 
-class FamixModel extends FamixObject {
+public class FamixModel extends FamixObject {
 
-    private static FamixModel currentInstance;
     private final Logger logger = Logger.getLogger(FamixModel.class);
     public List<FamixStructuralEntity> waitingStructuralEntities;
     public List<FamixAssociation> waitingAssociations;
@@ -28,7 +27,7 @@ class FamixModel extends FamixObject {
     public String modelCreationDate;
 	private int totalNumberOfLinesOfCode;
 
-    private FamixModel() {
+    public FamixModel() {
         this.modelCreationDate = new Date().toString();
         waitingAssociations = new ArrayList<FamixAssociation>();
         waitingStructuralEntities = new ArrayList<FamixStructuralEntity>();
@@ -44,30 +43,24 @@ class FamixModel extends FamixObject {
     }
 
     public void clear() {
-        currentInstance.waitingAssociations.clear();
-        currentInstance.waitingStructuralEntities.clear();
-        currentInstance.associations.clear();
-        currentInstance.classes.clear();
-        currentInstance.packages.clear();
-        currentInstance.libraries.clear();
-        currentInstance.imports.clear();
-        currentInstance.structuralEntities.clear();
-        currentInstance.behaviouralEntities.clear();
-        currentInstance.umlLinks.clear();
+        this.waitingAssociations.clear();
+        this.waitingStructuralEntities.clear();
+        this.associations.clear();
+        this.classes.clear();
+        this.packages.clear();
+        this.libraries.clear();
+        this.imports.clear();
+        this.structuralEntities.clear();
+        this.behaviouralEntities.clear();
+        this.umlLinks.clear();
         totalNumberOfLinesOfCode = 0;
     }
     
     public void clearAfterPostProcessing() {
-        currentInstance.waitingAssociations.clear();
-        currentInstance.waitingStructuralEntities.clear();
+        this.waitingAssociations.clear();
+        this.waitingStructuralEntities.clear();
     }
 
-    public static FamixModel getInstance() {
-        if (currentInstance == null) {
-            currentInstance = new FamixModel();
-        }
-        return currentInstance;
-    }
 
     // Add Methods
     
