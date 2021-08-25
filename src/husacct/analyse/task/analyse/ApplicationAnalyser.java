@@ -35,6 +35,10 @@ public class ApplicationAnalyser {
         for (int i = 0; i < size; i ++) {
             try {
             	String projectPath = paths[i];
+                Path projectPathAsPath = Paths.get(projectPath);
+
+                this.logger.info(String.format("Analysing %s", projectPathAsPath.toAbsolutePath()));
+
                 List<MetaFile> fileData = getFileInfoFromProject(projectPath, sourceFileExtension);
                 if ((fileData != null) && (fileData.size() == 0)) {
                     this.logger.warn(" No files with extension " + sourceFileExtension + " found at path: " + projectPath);
