@@ -2,9 +2,10 @@ package husaccttest.analyse.layering;
 
 import husacct.analyse.domain.layering.Layer;
 import husacct.analyse.domain.layering.Pruijt2016Layering;
-import husacct.analyse.domain.layering.SoftwareUnit;
-import husacct.analyse.domain.layering.SoftwareUnit.SoftwareUnitType;
+import husacct.analyse.domain.layering.SingleSoftwareUnit;
+import husacct.analyse.domain.layering.SingleSoftwareUnit.SoftwareUnitType;
 
+import husacct.analyse.domain.layering.SoftwareUnit;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,17 +16,17 @@ import static org.junit.Assert.*;
 
 public class Pruijt2016LayeringTests {
 
-    private SoftwareUnit presentation;
-    private SoftwareUnit logic;
-    private SoftwareUnit domain;
+    private SingleSoftwareUnit presentation;
+    private SingleSoftwareUnit logic;
+    private SingleSoftwareUnit domain;
 
     private Pruijt2016Layering layeringAlgorithm;
 
     @Before
     public void setup() {
-        presentation = new SoftwareUnit("Presentation", SoftwareUnitType.Package);
-        logic = new SoftwareUnit("Logic", SoftwareUnitType.Package);
-        domain = new SoftwareUnit("Domain", SoftwareUnitType.Package);
+        presentation = new SingleSoftwareUnit("Presentation", SoftwareUnitType.Package);
+        logic = new SingleSoftwareUnit("Logic", SoftwareUnitType.Package);
+        domain = new SingleSoftwareUnit("Domain", SoftwareUnitType.Package);
         layeringAlgorithm = new Pruijt2016Layering();
     }
 

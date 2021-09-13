@@ -1,6 +1,5 @@
 package husacct.analyse.domain.layering;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class Dependency {
@@ -42,5 +41,14 @@ public class Dependency {
 
     public void cutDependency() {
         this.from.cutDependency(this.to);
+    }
+
+    public boolean isCyclic() {
+        return this.to.findDependency(this.from).isPresent(); //TODO: detect longer cycles...
+
+    }
+
+    public SoftwareUnit getFrom() {
+        return this.from;
     }
 }
