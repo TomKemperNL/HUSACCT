@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class SoftwareUnit {
 
+
     public enum SoftwareUnitType { Class, Package, Interface }
 
     private String name;
@@ -30,6 +31,14 @@ public class SoftwareUnit {
 
     public void dependsOn(SoftwareUnit unit) {
         this.dependencies.add(unit);
+    }
+
+    public void cutDependency(SoftwareUnit unit){
+        this.dependencies.remove(unit);
+    }
+
+    public boolean hasNoDependencies() {
+        return this.dependencies.size() == 0;
     }
 
     public String getName() {

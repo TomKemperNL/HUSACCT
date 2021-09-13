@@ -1,17 +1,25 @@
 package husacct.analyse.domain.layering;
 
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 public class Layer {
     private String name;
     private Collection<SoftwareUnit> contents;
 
     public Layer(String name) {
+        this(name, new ArrayList<>());
+    }
+
+    public Layer(String name, List<SoftwareUnit> contents) {
         if (name == null) {
             throw new NullPointerException("name");
         }
         this.name = name;
+
+        if (contents == null) {
+            throw new NullPointerException("contents");
+        }
+        this.contents = contents;
     }
 
     public String getName() {
@@ -31,7 +39,7 @@ public class Layer {
         return Objects.hash(name);
     }
 
-    public Iterable<SoftwareUnit> getContents() {
-        return contents;
+    public List<SoftwareUnit> getContents() {
+        return new ArrayList<>(contents);
     }
 }
