@@ -57,11 +57,6 @@ public class SingleSoftwareUnit implements SoftwareUnit {
         return new ArrayList<>(this.dependencies);
     }
 
-    @Override
-    public boolean hasNoDependencies() {
-        return this.dependencies.size() == 0;
-    }
-
     public String getName() {
         return name;
     }

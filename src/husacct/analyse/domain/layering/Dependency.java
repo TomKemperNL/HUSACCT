@@ -1,6 +1,6 @@
 package husacct.analyse.domain.layering;
 
-import java.util.Optional;
+import java.util.*;
 
 public class Dependency {
     private SoftwareUnit to;
@@ -43,9 +43,19 @@ public class Dependency {
         this.from.cutDependency(this.to);
     }
 
-    public boolean isCyclic() {
-        return this.to.findDependency(this.from).isPresent(); //TODO: detect longer cycles...
+    public Optional<Set<Dependency>> findCycle() {
+        Optional<Dependency> possiblyOther = this.to.findDependency(this.from);
 
+        if (possiblyOther.isPresent()) {
+            Set<Dependency> result = new HashSet<>();
+            result.add(this);
+            result.add(possiblyOther.get());
+
+            return Optional.of(result);
+        }
+        ; //TODO: detect longer cycles
+
+        return Optional.empty();
     }
 
     public SoftwareUnit getFrom() {

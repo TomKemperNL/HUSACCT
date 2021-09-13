@@ -1,9 +1,6 @@
 package husacct.analyse.domain.layering;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Pruijt2016Layering {
@@ -21,14 +18,29 @@ public class Pruijt2016Layering {
     }
 
     private Collection<SoftwareUnit> mergeCycles(Collection<SoftwareUnit> units) {
+
+        Set<Set<Dependency>> cycles = new HashSet<>();
+
         for (SoftwareUnit unit : units) {
             for (Dependency dep : unit.getDependencies()) {
-                if (dep.isCyclic()) {
-                    units.remove(dep.getTo());
-                    units.remove(dep.getFrom());
-                    units.add(new MergedSoftwareUnit(Arrays.asList(dep.getTo(), dep.getFrom())));
+                Optional<Set<Dependency>> maybeCycle = dep.findCycle();
+                if (maybeCycle.isPresent()) {
+                    cycles.add(maybeCycle.get());
                 }
+
             }
+        }
+
+        for (Set<Dependency> cycle : cycles) {
+            Set<SoftwareUnit> toBeMerged = new HashSet<>();
+            for (Dependency part : cycle) {
+                units.remove(part.getTo());
+                units.remove(part.getFrom());
+                toBeMerged.add(part.getTo());
+                toBeMerged.add(part.getFrom());
+            }
+
+            units.add(new MergedSoftwareUnit(new ArrayList<>(toBeMerged)));
         }
 
         return units;
@@ -37,7 +49,7 @@ public class Pruijt2016Layering {
     private Layer reconstructLayer(Collection<SoftwareUnit> units) {
         List<SoftwareUnit> unitsWithNoDependencies =
                 units.stream()
-                        .filter(u -> u.hasNoDependencies())
+                        .filter(u -> u.hasNoDependenciesIn(units))
                         .collect(Collectors.toList());
 
         if (unitsWithNoDependencies.size() == 0) {
@@ -45,13 +57,8 @@ public class Pruijt2016Layering {
         }
 
         units.removeAll(unitsWithNoDependencies);
-        for (SoftwareUnit toRemove : unitsWithNoDependencies) {
-            for (SoftwareUnit u : units) {
-                u.cutDependency(toRemove);
-            }
-        }
 
-        return new Layer("SomeLayer", unitsWithNoDependencies.stream().flatMap(u -> u.flatten().stream()).collect(Collectors.toList()));
+        return new Layer("SomeLayer", unitsWithNoDependencies.stream().flatMap(u -> u.flatten().stream()).distinct().collect(Collectors.toList()));
     }
 
     public List<Layer> reconstructArchitecture(int backcallTreshhold, Collection<SoftwareUnit> units) {

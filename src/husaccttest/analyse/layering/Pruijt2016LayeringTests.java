@@ -69,4 +69,50 @@ public class Pruijt2016LayeringTests {
         assertEquals(domain, layers.get(0).getContents().get(0));
         assertEquals(logic, layers.get(1).getContents().get(0));
     }
+
+    public static class TestsFromTheSlides {
+
+        @Test
+        public void runWithHighTreshold(){
+            ASD03Slide6Exercise(10, 5);
+        }
+
+        @Test
+        public void runWithLowTreshold(){
+            ASD03Slide6Exercise(5, 4);
+        }
+
+
+        public void ASD03Slide6Exercise(int treshold, int expectedLayers) {
+            SingleSoftwareUnit analyseServiceImpl = new SingleSoftwareUnit("AnalyseServiceImpl", SoftwareUnitType.Class);
+            SingleSoftwareUnit presentation = new SingleSoftwareUnit("Presentation", SoftwareUnitType.Package);
+            SingleSoftwareUnit task = new SingleSoftwareUnit("Task", SoftwareUnitType.Package);
+            SingleSoftwareUnit iAnalyseService = new SingleSoftwareUnit("IAnalyseService", SoftwareUnitType.Interface);
+            SingleSoftwareUnit domain = new SingleSoftwareUnit("Domain", SoftwareUnitType.Package);
+            SingleSoftwareUnit abstraction = new SingleSoftwareUnit("Abstraction", SoftwareUnitType.Package);
+            SingleSoftwareUnit infrastructure = new SingleSoftwareUnit("Infrastructure", SoftwareUnitType.Package);
+
+            analyseServiceImpl.addDependency(presentation, 15);
+            analyseServiceImpl.addDependency(task, 22);
+            analyseServiceImpl.addDependency(iAnalyseService, 1);
+            analyseServiceImpl.addDependency(domain, 28);
+
+            presentation.addDependency(task, 200);
+
+            task.addDependency(iAnalyseService, 4);
+            task.addDependency(domain, 265);
+            task.addDependency(infrastructure, 166);
+            task.addDependency(abstraction, 8);
+
+            iAnalyseService.addDependency(task, 2);
+
+            domain.addDependency(abstraction, 50);
+            abstraction.addDependency(domain, 5);
+
+            Pruijt2016Layering layering = new Pruijt2016Layering();
+
+            List<Layer> layers = layering.reconstructArchitecture(treshold, Arrays.asList(analyseServiceImpl, presentation, task, iAnalyseService, domain, abstraction, infrastructure));
+            assertEquals(expectedLayers, layers.size());
+        }
+    }
 }
