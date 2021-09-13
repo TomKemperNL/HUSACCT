@@ -32,8 +32,8 @@ public class Pruijt2016LayeringTests {
 
     @Test
     public void canCreateSimpleLayeredModel() {
-        presentation.dependsOn(logic, 1);
-        logic.dependsOn(domain, 1);
+        presentation.addDependency(logic, 1);
+        logic.addDependency(domain, 1);
 
         List<Layer> layers = layeringAlgorithm.reconstructArchitecture(10, Arrays.asList(presentation, logic, domain));
 
@@ -44,8 +44,8 @@ public class Pruijt2016LayeringTests {
 
     @Test
     public void canCreateSingleLayerFromTooManyBackCalls() {
-        logic.dependsOn(domain, 10);
-        domain.dependsOn(logic, 8);
+        logic.addDependency(domain, 10);
+        domain.addDependency(logic, 8);
 
         Pruijt2016Layering layeringAlgorithm = new Pruijt2016Layering();
 
@@ -53,5 +53,19 @@ public class Pruijt2016LayeringTests {
 
         assertEquals(1, layers.size());
         assertEquals(2, layers.get(0).getContents().size());
+    }
+
+    @Test
+    public void canCreateSeperateLayersFromAFewBackCalls() {
+        logic.addDependency(domain, 100);
+        domain.addDependency(logic, 1);
+
+        Pruijt2016Layering layeringAlgorithm = new Pruijt2016Layering();
+
+        List<Layer> layers = layeringAlgorithm.reconstructArchitecture(10, Arrays.asList(logic, domain));
+
+        assertEquals(2, layers.size());
+        assertEquals(domain, layers.get(0).getContents().get(0));
+        assertEquals(logic, layers.get(1).getContents().get(0));
     }
 }

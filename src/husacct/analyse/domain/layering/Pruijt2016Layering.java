@@ -8,6 +8,18 @@ import java.util.stream.Collectors;
 public class Pruijt2016Layering {
 
     private Collection<SoftwareUnit> applyBackcallTreshhold(int backcallTreshhold, Collection<SoftwareUnit> units) {
+        for (SoftwareUnit unit : units) {
+            for (Dependency dep : unit.getDependencies()) {
+                if (dep.isWithinBackCallTreshhold(backcallTreshhold)) {
+                    dep.cutDependency();
+                }
+            }
+        }
+
+        return units;
+    }
+
+    private Collection<SoftwareUnit> mergeCycles(Collection<SoftwareUnit> units) {
         return units;
     }
 
@@ -35,6 +47,7 @@ public class Pruijt2016Layering {
         units = new ArrayList<>(units);
 
         units = applyBackcallTreshhold(backcallTreshhold, units);
+        units = mergeCycles(units);
 
         List<Layer> layers = new ArrayList<>();
 

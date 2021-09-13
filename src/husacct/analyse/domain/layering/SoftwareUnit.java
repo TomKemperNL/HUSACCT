@@ -1,13 +1,9 @@
 package husacct.analyse.domain.layering;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SoftwareUnit {
-
 
     public enum SoftwareUnitType {Class, Package, Interface}
 
@@ -31,11 +27,15 @@ public class SoftwareUnit {
         return type;
     }
 
-    public void dependsOn(SoftwareUnit unit, int nrOfTimes) {
+    public void addDependency(SoftwareUnit unit, int nrOfTimes) {
         if (nrOfTimes <= 0) {
             throw new IllegalArgumentException("A dependency depends on something at least once");
         }
-        this.dependencies.add(new Dependency(unit, nrOfTimes));
+        this.dependencies.add(new Dependency(this, unit, nrOfTimes));
+    }
+
+    public Optional<Dependency> findDependency(SoftwareUnit unit) {
+        return this.dependencies.stream().filter(d -> d.getTo().equals(unit)).findAny();
     }
 
     public void cutDependency(SoftwareUnit unit) {
@@ -43,6 +43,10 @@ public class SoftwareUnit {
         for (Dependency match : matchingDeps) {
             this.dependencies.remove(match);
         }
+    }
+
+    public List<Dependency> getDependencies(){
+        return new ArrayList<>(this.dependencies);
     }
 
     public boolean hasNoDependencies() {
