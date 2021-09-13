@@ -2,22 +2,24 @@ package husacct.analyse.domain.layering;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SoftwareUnit {
 
 
-    public enum SoftwareUnitType { Class, Package, Interface }
+    public enum SoftwareUnitType {Class, Package, Interface}
 
     private String name;
     private SoftwareUnitType type;
-    private Collection<SoftwareUnit> dependencies;
+    private Collection<Dependency> dependencies;
 
-    public SoftwareUnit(String name, SoftwareUnitType type){
-        if(name == null){
+    public SoftwareUnit(String name, SoftwareUnitType type) {
+        if (name == null) {
             throw new NullPointerException("name");
         }
-        if(type == null){
+        if (type == null) {
             throw new NullPointerException("type");
         }
         this.name = name;
@@ -29,12 +31,18 @@ public class SoftwareUnit {
         return type;
     }
 
-    public void dependsOn(SoftwareUnit unit) {
-        this.dependencies.add(unit);
+    public void dependsOn(SoftwareUnit unit, int nrOfTimes) {
+        if (nrOfTimes <= 0) {
+            throw new IllegalArgumentException("A dependency depends on something at least once");
+        }
+        this.dependencies.add(new Dependency(unit, nrOfTimes));
     }
 
-    public void cutDependency(SoftwareUnit unit){
-        this.dependencies.remove(unit);
+    public void cutDependency(SoftwareUnit unit) {
+        List<Dependency> matchingDeps = this.dependencies.stream().filter(d -> d.getTo().equals(unit)).collect(Collectors.toList());
+        for (Dependency match : matchingDeps) {
+            this.dependencies.remove(match);
+        }
     }
 
     public boolean hasNoDependencies() {
