@@ -73,17 +73,7 @@ public class Pruijt2016LayeringTests {
     public static class TestsFromTheSlides {
 
         @Test
-        public void runWithHighTreshold(){
-            ASD03Slide6Exercise(10, 5);
-        }
-
-        @Test
-        public void runWithLowTreshold(){
-            ASD03Slide6Exercise(5, 4);
-        }
-
-
-        public void ASD03Slide6Exercise(int treshold, int expectedLayers) {
+        public void ASD03Slide6Exercise() {
             SingleSoftwareUnit analyseServiceImpl = new SingleSoftwareUnit("AnalyseServiceImpl", SoftwareUnitType.Class);
             SingleSoftwareUnit presentation = new SingleSoftwareUnit("Presentation", SoftwareUnitType.Package);
             SingleSoftwareUnit task = new SingleSoftwareUnit("Task", SoftwareUnitType.Package);
@@ -111,8 +101,11 @@ public class Pruijt2016LayeringTests {
 
             Pruijt2016Layering layering = new Pruijt2016Layering();
 
-            List<Layer> layers = layering.reconstructArchitecture(treshold, Arrays.asList(analyseServiceImpl, presentation, task, iAnalyseService, domain, abstraction, infrastructure));
-            assertEquals(expectedLayers, layers.size());
+            List<Layer> layers = layering.reconstructArchitecture(10, Arrays.asList(analyseServiceImpl, presentation, task, iAnalyseService, domain, abstraction, infrastructure));
+            assertEquals(5, layers.size());
+
+            layers = layering.reconstructArchitecture(5, Arrays.asList(analyseServiceImpl, presentation, task, iAnalyseService, domain, abstraction, infrastructure));
+            assertEquals(4, layers.size());
         }
     }
 }
