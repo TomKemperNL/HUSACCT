@@ -61,4 +61,16 @@ public class Dependency {
     public SoftwareUnit getFrom() {
         return this.from;
     }
+
+    Dependency deepClone(Map<SoftwareUnit, SoftwareUnit> replacements) {
+        if (replacements.get(this.from) == null) {
+            replacements.put(this.from, this.from.deepClone(replacements));
+        }
+
+        if (replacements.get(this.to) == null) {
+            replacements.put(this.to, this.to.deepClone(replacements));
+        }
+
+        return new Dependency(replacements.get(this.from), replacements.get(this.to), this.count);
+    }
 }

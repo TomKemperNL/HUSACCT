@@ -11,6 +11,9 @@ public class MergedSoftwareUnit implements SoftwareUnit {
     private List<SoftwareUnit> units = new ArrayList<>();
 
     public MergedSoftwareUnit(List<SoftwareUnit> units) {
+        if(units == null){
+            throw new NullPointerException("units");
+        }
         this.units = units;
     }
 
@@ -23,7 +26,7 @@ public class MergedSoftwareUnit implements SoftwareUnit {
 
         List<Dependency> result = new ArrayList<>();
 
-        for(SoftwareUnit u: grouped.keySet()){
+        for (SoftwareUnit u : grouped.keySet()) {
             int totalDeps = grouped.get(u).stream().mapToInt(Dependency::getCount).sum();
             result.add(new Dependency(this, u, totalDeps));
         }
@@ -45,5 +48,18 @@ public class MergedSoftwareUnit implements SoftwareUnit {
     @Override
     public List<SoftwareUnit> flatten() {
         return units.stream().flatMap(u -> u.flatten().stream()).distinct().collect(Collectors.toList());
+    }
+
+    @Override
+    public SoftwareUnit deepClone(Map<SoftwareUnit, SoftwareUnit> replacements) {
+        if (replacements.get(this) == null) {
+            List<SoftwareUnit> clones = this.units.stream().map(u -> u.deepClone(replacements)).collect(Collectors.toList());
+            MergedSoftwareUnit replacement = new MergedSoftwareUnit(clones);
+            replacements.put(this, replacement);
+        }
+
+        return replacements.get(this);
+
+
     }
 }

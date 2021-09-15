@@ -45,6 +45,20 @@ public class SingleSoftwareUnit implements SoftwareUnit {
     }
 
     @Override
+    public SoftwareUnit deepClone(Map<SoftwareUnit, SoftwareUnit> replacements) {
+        if (replacements.get(this) == null) {
+            SingleSoftwareUnit replacement = new SingleSoftwareUnit(this.name, this.type);
+            replacements.put(this, replacement);
+
+            for(Dependency d: this.dependencies){
+                replacement.dependencies.add(d.deepClone(replacements));
+            }
+        }
+
+        return replacements.get(this);
+    }
+
+    @Override
     public void cutDependency(SoftwareUnit unit) {
         List<Dependency> matchingDeps = this.dependencies.stream().filter(d -> d.getTo().equals(unit)).collect(Collectors.toList());
         for (Dependency match : matchingDeps) {

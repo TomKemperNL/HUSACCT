@@ -62,7 +62,7 @@ public class Pruijt2016Layering {
     }
 
     public List<Layer> reconstructArchitecture(int backcallTreshhold, Collection<SoftwareUnit> units) {
-        units = new ArrayList<>(units);
+        units = SoftwareUnit.clone(units);
 
         units = applyBackcallTreshhold(backcallTreshhold, units);
         units = mergeCycles(units);
