@@ -5,29 +5,14 @@ import java.util.stream.Collectors;
 
 public class Pruijt2016Layering {
 
-    private Collection<SoftwareUnit> applyBackcallTreshhold(int backcallTreshhold, Collection<SoftwareUnit> units) {
-        for (SoftwareUnit unit : units) {
-            for (Dependency dep : unit.getDependencies()) {
-                if (dep.isWithinBackCallTreshhold(backcallTreshhold)) {
-                    dep.cutDependency();
-                }
-            }
-        }
-
-        return units;
-    }
-
-    private Collection<SoftwareUnit> mergeCycles(Collection<SoftwareUnit> units) {
+    private void mergeCycles(Collection<SoftwareUnit> units) {
 
         Set<Set<Dependency>> cycles = new HashSet<>();
 
         for (SoftwareUnit unit : units) {
             for (Dependency dep : unit.getDependencies()) {
                 Optional<Set<Dependency>> maybeCycle = dep.findCycle();
-                if (maybeCycle.isPresent()) {
-                    cycles.add(maybeCycle.get());
-                }
-
+                maybeCycle.ifPresent(cycles::add);
             }
         }
 
@@ -42,8 +27,16 @@ public class Pruijt2016Layering {
 
             units.add(new MergedSoftwareUnit(new ArrayList<>(toBeMerged)));
         }
+    }
 
-        return units;
+    private void applyBackcallTreshhold(int backcallTreshhold, Collection<SoftwareUnit> units) {
+        for (SoftwareUnit unit : units) {
+            for (Dependency dep : unit.getDependencies()) {
+                if (dep.isWithinBackCallTreshhold(backcallTreshhold)) {
+                    dep.cutDependency();
+                }
+            }
+        }
     }
 
     private Layer reconstructLayer(Collection<SoftwareUnit> units) {
@@ -64,8 +57,8 @@ public class Pruijt2016Layering {
     public List<Layer> reconstructArchitecture(int backcallTreshhold, Collection<SoftwareUnit> units) {
         units = SoftwareUnit.clone(units);
 
-        units = applyBackcallTreshhold(backcallTreshhold, units);
-        units = mergeCycles(units);
+        applyBackcallTreshhold(backcallTreshhold, units);
+        mergeCycles(units);
 
         List<Layer> layers = new ArrayList<>();
 

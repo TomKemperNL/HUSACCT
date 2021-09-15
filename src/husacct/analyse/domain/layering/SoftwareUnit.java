@@ -12,7 +12,7 @@ public interface SoftwareUnit {
     default boolean hasNoDependenciesIn(Collection<SoftwareUnit> units) {
         List<SoftwareUnit> flattened = units.stream().flatMap(u -> u.flatten().stream()).collect(Collectors.toList());
 
-        return !this.getDependencies().stream().anyMatch(d -> flattened.contains(d.getTo()));
+        return this.getDependencies().stream().noneMatch(d -> flattened.contains(d.getTo()));
     }
 
     Optional<Dependency> findDependency(SoftwareUnit on);

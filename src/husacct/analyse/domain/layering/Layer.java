@@ -3,12 +3,8 @@ package husacct.analyse.domain.layering;
 import java.util.*;
 
 public class Layer {
-    private String name;
-    private Collection<SoftwareUnit> contents;
-
-    public Layer(String name) {
-        this(name, new ArrayList<>());
-    }
+    private final String name;
+    private final Collection<SoftwareUnit> contents;
 
     public Layer(String name, List<SoftwareUnit> contents) {
         if (name == null) {

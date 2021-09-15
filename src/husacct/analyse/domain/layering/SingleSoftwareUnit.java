@@ -7,9 +7,9 @@ public class SingleSoftwareUnit implements SoftwareUnit {
 
     public enum SoftwareUnitType {Class, Package, Interface}
 
-    private String name;
-    private SoftwareUnitType type;
-    private Collection<Dependency> dependencies;
+    private final String name;
+    private final SoftwareUnitType type;
+    private final Collection<Dependency> dependencies;
 
     public SingleSoftwareUnit(String name, SoftwareUnitType type) {
         if (name == null) {
@@ -41,7 +41,7 @@ public class SingleSoftwareUnit implements SoftwareUnit {
 
     @Override
     public List<SoftwareUnit> flatten() {
-        return Arrays.asList(this);
+        return Collections.singletonList(this);
     }
 
     @Override

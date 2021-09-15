@@ -3,9 +3,9 @@ package husacct.analyse.domain.layering;
 import java.util.*;
 
 public class Dependency {
-    private SoftwareUnit to;
-    private SoftwareUnit from;
-    private int count;
+    private final SoftwareUnit to;
+    private final SoftwareUnit from;
+    private final int count;
 
     public Dependency(SoftwareUnit from, SoftwareUnit to, int count) {
         this.to = to;
@@ -19,11 +19,6 @@ public class Dependency {
 
     public int getCount() {
         return count;
-    }
-
-    public boolean isBackCall() {
-        Optional<Dependency> possiblyOther = to.findDependency(from);
-        return possiblyOther.isPresent();
     }
 
     public boolean isWithinBackCallTreshhold(int treshhold) {
@@ -53,7 +48,7 @@ public class Dependency {
 
             return Optional.of(result);
         }
-        ; //TODO: detect longer cycles
+        //TODO: detect longer cycles
 
         return Optional.empty();
     }

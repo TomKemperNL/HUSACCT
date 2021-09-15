@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class MergedSoftwareUnit implements SoftwareUnit {
 
-    private List<SoftwareUnit> units = new ArrayList<>();
+    private final List<SoftwareUnit> units;
 
     public MergedSoftwareUnit(List<SoftwareUnit> units) {
         if(units == null){
