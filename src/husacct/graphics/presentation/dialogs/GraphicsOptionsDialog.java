@@ -35,10 +35,8 @@ public class GraphicsOptionsDialog extends HelpableJDialog {
 	protected Logger								logger				= Logger.getLogger(GraphicsOptionsDialog.class);
 	private ArrayList<UserInputListener>			listeners			= new ArrayList<UserInputListener>();
 	
-	private JPanel									mainPanel, settingsPanel, globalActionsPanel, figuresActionsPanel, optionsPanel, zoomPanel, layoutStrategyPanel, dependencyPanel;
-	
-	private int										menuItemMaxHeight	= 45;
-	
+	private JPanel									mainPanel, globalActionsPanel, figuresActionsPanel, optionsPanel;
+
 	private JButton									zoomInButton, zoomOutButton, refreshButton, exportToImageButton, hideSelectedModulesButton, restoreHiddenModulesButton, okButton, cancelButton;
 	private JCheckBox								showDependenciesOptionMenu, showViolationsOptionMenu, smartLinesOptionMenu, showExternalLibraries, enableThickLines;
 	private JComboBox<String>						layoutStrategyOptions;
@@ -48,7 +46,7 @@ public class GraphicsOptionsDialog extends HelpableJDialog {
 	private HashMap<String, Object>					currentSettings;
 	private boolean 								refreshDrawingRequired = false;
 	
-	private int										totalWidth, totalHeight, paddingSize, labelWidth, elementWidth, elementHeight;
+	private int										totalWidth, paddingSize, labelWidth, elementWidth, elementHeight;
 	private HashMap<String, ModuleLayoutsEnum>		layoutStrategiesTranslations;
 	private String[]								layoutStrategyItems;
 	private HashMap<String, DependencyTypeOption>	dependencyOptionTypeTranslations;
@@ -69,7 +67,6 @@ public class GraphicsOptionsDialog extends HelpableJDialog {
 		currentSettings.put("layoutStrategy", ModuleLayoutsEnum.BASIC_LAYOUT);
 		
 		totalWidth = 550;
-		totalHeight = 290;
 		paddingSize = 10;
 		labelWidth = 110;
 		elementHeight = 20;
@@ -202,57 +199,35 @@ public class GraphicsOptionsDialog extends HelpableJDialog {
 		
 		optionsPanel = new JPanel();
 		optionsPanel.setBorder(new EmptyBorder(0, paddingSize, 0, paddingSize));
-		optionsPanel.setLayout(new GridLayout(3, 1));
+		optionsPanel.setLayout(new GridLayout(3, 2));
 		
 		showDependenciesOptionMenu = new JCheckBox();
-		showDependenciesOptionMenu.setPreferredSize(new Dimension(40, menuItemMaxHeight));
-		showDependenciesOptionMenu.setMaximumSize(new Dimension(40, menuItemMaxHeight));
 		optionsPanel.add(showDependenciesOptionMenu);
 		
 		showViolationsOptionMenu = new JCheckBox();
-		showViolationsOptionMenu.setSize(40, menuItemMaxHeight);
 		optionsPanel.add(showViolationsOptionMenu);
 		
 		showExternalLibraries = new JCheckBox();
-		showExternalLibraries.setSize(40, menuItemMaxHeight);
 		optionsPanel.add(showExternalLibraries);
 		
 		enableThickLines = new JCheckBox();
-		enableThickLines.setSize(40, menuItemMaxHeight);
 		optionsPanel.add(enableThickLines);
 		
 		smartLinesOptionMenu = new JCheckBox();
-		smartLinesOptionMenu.setSize(40, menuItemMaxHeight);
 		optionsPanel.add(smartLinesOptionMenu);
 		
 		mainPanel.add(optionsPanel);
-		
-		settingsPanel = new JPanel();
-		settingsPanel.setLayout(new GridLayout(3, 2));
-		settingsPanel.setBorder(new EmptyBorder(0, paddingSize, 0, paddingSize));
-		
-		layoutStrategyPanel = new JPanel();
-		layoutStrategyPanel.setSize(getWidth(), getHeight());
-		layoutStrategyPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
 		layoutStrategyLabel = new JLabel();
-		layoutStrategyLabel.setPreferredSize(new Dimension(labelWidth, elementHeight));
-		layoutStrategyPanel.add(layoutStrategyLabel);
+		mainPanel.add(layoutStrategyLabel);
 		
 		layoutStrategyOptions = new JComboBox<String>(layoutStrategyItems);
 		layoutStrategyOptions.setPreferredSize(new Dimension(elementWidth, elementHeight));
-		layoutStrategyPanel.add(layoutStrategyOptions);
-		settingsPanel.add(layoutStrategyPanel);
+		mainPanel.add(layoutStrategyOptions);
 
 		if (showDependencyOptions) {
-			dependencyPanel = new JPanel();
-
-			dependencyPanel.setSize(getWidth(), getHeight());
-			dependencyPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
 			dependencyLabel = new JLabel();
-			dependencyLabel.setPreferredSize(new Dimension(labelWidth, elementHeight));
-
-			dependencyPanel.add(dependencyLabel);
+			mainPanel.add(dependencyLabel);
 			
 			toggleDependencyType = new JComboBox<String>(dependencyOptionItems);
 			toggleDependencyType.setPreferredSize(new Dimension(elementWidth, elementHeight));
@@ -268,18 +243,11 @@ public class GraphicsOptionsDialog extends HelpableJDialog {
 					}
 				}
 			});
-			dependencyPanel.add(toggleDependencyType);
-			settingsPanel.add(dependencyPanel);
+			mainPanel.add(toggleDependencyType);
 		}
 
-
-		
-		zoomPanel = new JPanel();
-		zoomPanel.setSize(getWidth(), getHeight());
-		zoomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		zoomLabel = new JLabel();
-		zoomLabel.setPreferredSize(new Dimension(labelWidth, elementHeight));
-		zoomPanel.add(zoomLabel);
+		mainPanel.add(zoomLabel);
 		
 		zoomSlider = new JSlider(25, 175, 100);
 		zoomSlider.setPreferredSize(new Dimension(elementWidth, elementHeight));
@@ -291,10 +259,7 @@ public class GraphicsOptionsDialog extends HelpableJDialog {
 					listener.zoomFactorChanged(scale);
 			}
 		});
-		zoomPanel.add(zoomSlider);
-		settingsPanel.add(zoomPanel);
-		
-		mainPanel.add(settingsPanel);
+		mainPanel.add(zoomSlider);
 		
 		JPanel confirmPanel = new JPanel();
 		confirmPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -529,8 +494,8 @@ public class GraphicsOptionsDialog extends HelpableJDialog {
 	public void showDialog() {
 		setResizable(false);
 		setAlwaysOnTop(false);
-		setSize(totalWidth, totalHeight);
 		ServiceProvider.getInstance().getControlService().centerDialog(this);
+		this.pack();
 		setVisible(true);
 	}
 	
@@ -543,8 +508,4 @@ public class GraphicsOptionsDialog extends HelpableJDialog {
 		for (JComponent element : interfaceElements)
 			element.setEnabled(true);
 	}
-
-    public void hideDependencyToggle() {
-        dependencyPanel.setVisible(false);
-    }
 }
