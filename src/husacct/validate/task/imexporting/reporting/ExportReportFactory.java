@@ -38,8 +38,6 @@ public class ExportReportFactory {
 				writer = new ExcelReportWriter(report, path, name, taskServiceImpl);
 			} else if (fileType.toLowerCase().equals(ExtensionTypes.HTML.getExtension().toLowerCase())) {
 				writer = new HTMLReportWriter(report, path, name, taskServiceImpl);
-			} else if (fileType.toLowerCase().equals(ExtensionTypes.PDF.getExtension().toLowerCase())) {
-				throw new RuntimeException("PDF export is not implemented anymore");
 			}
 			if (writer == null) {
 				throw new UnknownStorageTypeException("Storage type " + fileType + " doesn't exist or is not implemented");

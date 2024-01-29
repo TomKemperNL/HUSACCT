@@ -5,7 +5,6 @@ package husacct.common.enums;
 public enum ExtensionTypes {
 	XLS("xls"),
 	HTML("html"),
-	PDF("pdf"),
 	XML("xml");
 	
 	private String extension;
