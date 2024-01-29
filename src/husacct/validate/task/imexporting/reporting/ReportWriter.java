@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.itextpdf.text.DocumentException;
-
 public abstract class ReportWriter {
 
 	protected Report report;
@@ -35,7 +33,7 @@ public abstract class ReportWriter {
 		this.taskServiceImpl = taskServiceImpl;
 	}
 
-	public abstract void createReport() throws IOException, URISyntaxException, DocumentException;
+	public abstract void createReport() throws IOException, URISyntaxException;
 
 	protected TreeMap<Integer ,RuleWithNrOfViolationsDTO> getViolatedRulesWithNumberOfViolations(TaskServiceImpl taskServiceImpl) {
 		TreeMap<Integer ,RuleWithNrOfViolationsDTO> violatedRulesMap= new TreeMap<Integer, RuleWithNrOfViolationsDTO>();

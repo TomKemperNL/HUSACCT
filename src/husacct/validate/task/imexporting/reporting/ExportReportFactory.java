@@ -18,9 +18,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.jdom2.Document;
-
-import com.itextpdf.text.DocumentException;
-
 public class ExportReportFactory {
 
 	private final TaskServiceImpl taskServiceImpl;
@@ -42,7 +39,7 @@ public class ExportReportFactory {
 			} else if (fileType.toLowerCase().equals(ExtensionTypes.HTML.getExtension().toLowerCase())) {
 				writer = new HTMLReportWriter(report, path, name, taskServiceImpl);
 			} else if (fileType.toLowerCase().equals(ExtensionTypes.PDF.getExtension().toLowerCase())) {
-				writer = new PDFReportWriter(report, path, name, taskServiceImpl);
+				throw new RuntimeException("PDF export is not implemented anymore");
 			}
 			if (writer == null) {
 				throw new UnknownStorageTypeException("Storage type " + fileType + " doesn't exist or is not implemented");
@@ -54,8 +51,6 @@ public class ExportReportFactory {
 		} catch (UnknownStorageTypeException e) {
 			createException(e);
 		} catch (URISyntaxException e) {
-			createException(e);
-		} catch (DocumentException e) {
 			createException(e);
 		}
 	}

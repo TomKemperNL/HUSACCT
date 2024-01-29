@@ -33,9 +33,6 @@ import jxl.write.biff.RowsExceededException;
 
 import org.apache.log4j.Logger;
 
-import com.itextpdf.text.DocumentException;
-
-
 public class ExcelReportWriter extends ReportWriter {
 
     private Logger husacctLogger = Logger.getLogger(ExcelReportWriter.class);
@@ -130,7 +127,7 @@ public class ExcelReportWriter extends ReportWriter {
     }
 
     @Override
-    public void createReport() throws DocumentException, MalformedURLException, IOException {
+    public void createReport() throws MalformedURLException, IOException {
         String fullPath = path + "/" + fileName;
     	File file = new File(fullPath);
         WorkbookSettings documentSettings = new WorkbookSettings();
